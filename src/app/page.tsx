@@ -1,9 +1,5 @@
 import { Suspense } from 'react';
-import DashboardOverview from '@/components/DashboardOverview';
-import InvoiceBreakdown from '@/components/InvoiceBreakdown';
-import MeetingDetails from '@/components/MeetingDetails';
-import NoPdfAlerts from '@/components/NoPdfAlerts';
-import FailuresList from '@/components/FailuresList';
+import DashboardTabs from '@/components/DashboardTabs';
 import RefreshButton from '@/components/RefreshButton';
 import { fetchDashboardData, fetchEmailsWithoutPDF, fetchFailedProcessing } from '@/lib/api';
 
@@ -17,26 +13,11 @@ async function DashboardContent() {
     ]);
 
     return (
-      <>
-        {/* Overview Cards */}
-        <DashboardOverview 
-          data={dashboardData} 
-          noPdfCount={noPdfData.stats.total}
-          failureCount={failureData.stats.total}
-        />
-
-        {/* Main Grid - Invoices and Meetings */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <InvoiceBreakdown data={dashboardData.invoices} />
-          <MeetingDetails data={dashboardData.meetings} />
-        </div>
-
-        {/* Alerts Grid - Non-PDF Emails and Failures */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <NoPdfAlerts data={noPdfData} />
-          <FailuresList data={failureData} />
-        </div>
-      </>
+      <DashboardTabs 
+        dashboardData={dashboardData}
+        noPdfData={noPdfData}
+        failureData={failureData}
+      />
     );
   } catch (error) {
     return (
@@ -82,23 +63,29 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Invoice Processing Dashboard</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Orchestration Dashboard</h1>
               <p className="mt-1 text-sm text-gray-500">
                 Monitoring Factuurdemo & Woonzorg invoices
               </p>
             </div>
-            <RefreshButton />
+            <div className="flex gap-3">
+              <a 
+                href="/stats" 
+                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+              >
+                📊 View All Stats
+              </a>
+              <RefreshButton />
+            </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-6">
-          <Suspense fallback={<LoadingSkeleton />}>
-            <DashboardContent />
-          </Suspense>
-        </div>
+        <Suspense fallback={<LoadingSkeleton />}>
+          <DashboardContent />
+        </Suspense>
       </main>
 
       {/* Footer */}

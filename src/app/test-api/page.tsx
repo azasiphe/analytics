@@ -10,10 +10,16 @@ export default function TestAPI() {
   const [apiUrl, setApiUrl] = useState('');
 
   useEffect(() => {
-    const url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-    setApiUrl(url);
+    const envUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
+    setApiUrl(envUrl);
 
-    fetch(`${url}/api/Analytics/dashboard`)
+    if (!envUrl) {
+      setError('NEXT_PUBLIC_API_URL is not set');
+      setLoading(false);
+      return;
+    }
+
+    fetch(`${envUrl}/api/Analytics/dashboard`)
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
         return res.json();

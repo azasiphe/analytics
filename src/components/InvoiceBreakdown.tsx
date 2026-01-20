@@ -25,7 +25,7 @@ export default function InvoiceBreakdown({ data }: InvoiceBreakdownProps) {
       
       <div className="flex flex-col lg:flex-row items-center gap-8">
         {/* Chart */}
-        <div className="w-full lg:w-1/2 h-64">
+        <div className="w-full lg:w-1/2" style={{ minHeight: '300px', height: '300px' }}>
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
