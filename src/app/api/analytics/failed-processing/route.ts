@@ -4,34 +4,23 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const period = searchParams.get('period') || 'week';
 
-  // Mock data - replace with actual Application Insights query
+  const now = new Date();
+  const fromDate = new Date(now);
+  fromDate.setDate(fromDate.getDate() - (period === 'week' ? 7 : 30));
+
+  // Mock data matching backend API structure
   const mockData = {
-    thisWeek: {
-      extraction: 1,
-      reasoning: 1,
-      total: 2,
+    period: period as 'week' | 'month',
+    from: fromDate.toISOString().split('T')[0],
+    to: now.toISOString().split('T')[0],
+    generatedAt: now.toISOString().replace('T', ' ').substring(0, 19),
+    stats: {
+      extraction: period === 'week' ? 1 : 3,
+      reasoning: period === 'week' ? 1 : 2,
+      total: period === 'week' ? 2 : 5,
     },
-    thisMonth: {
-      extraction: 3,
-      reasoning: 2,
-      total: 5,
-    },
-    recentFailures: [
-      {
-        timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-        msgId: 'msg_err_001',
-        recipientType: 'Factuurdemo',
-        error: 'Failed to extract invoice data: PDF parsing error',
-        errorType: 'extraction' as const,
-      },
-      {
-        timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
-        msgId: 'msg_err_002',
-        recipientType: 'Woonzorg',
-        error: 'Reasoning model timeout: Request took too long',
-        errorType: 'reasoning' as const,
-      },
-    ],
+    recentFailures: [],
+    note: 'Configure Application Insights to see real data. Query: customEvents | where name == \'InvoiceProcessingFailed\''
   };
 
   return NextResponse.json(mockData);

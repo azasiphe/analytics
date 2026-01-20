@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import DashboardOverview from '@/components/DashboardOverview';
 import InvoiceBreakdown from '@/components/InvoiceBreakdown';
+import MeetingDetails from '@/components/MeetingDetails';
 import NoPdfAlerts from '@/components/NoPdfAlerts';
 import FailuresList from '@/components/FailuresList';
 import RefreshButton from '@/components/RefreshButton';
@@ -17,20 +18,24 @@ async function DashboardContent() {
 
     return (
       <>
+        {/* Overview Cards */}
         <DashboardOverview 
           data={dashboardData} 
-          noPdfCount={noPdfData.thisWeek.total}
-          failureCount={failureData.thisWeek.total}
+          noPdfCount={noPdfData.stats.total}
+          failureCount={failureData.stats.total}
         />
 
+        {/* Main Grid - Invoices and Meetings */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <InvoiceBreakdown data={dashboardData.invoices} />
-          <div className="space-y-6">
-            <NoPdfAlerts data={noPdfData} />
-          </div>
+          <MeetingDetails data={dashboardData.meetings} />
         </div>
 
-        <FailuresList data={failureData} />
+        {/* Alerts Grid - Non-PDF Emails and Failures */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <NoPdfAlerts data={noPdfData} />
+          <FailuresList data={failureData} />
+        </div>
       </>
     );
   } catch (error) {
@@ -42,6 +47,9 @@ async function DashboardContent() {
         </p>
         <p className="text-sm text-gray-600 mt-4">
           Make sure your backend API is running at: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}
+        </p>
+        <p className="text-xs text-gray-500 mt-2">
+          Using mock data? Endpoints are available at /api/analytics/*
         </p>
       </div>
     );

@@ -14,13 +14,24 @@ export async function GET(request: NextRequest) {
     from: fromDate.toISOString().split('T')[0],
     to: now.toISOString().split('T')[0],
     generatedAt: now.toISOString().replace('T', ' ').substring(0, 19),
-    stats: {
-      factuurdemo: period === 'week' ? 3 : 8,
-      woonzorg: period === 'week' ? 1 : 3,
-      total: period === 'week' ? 4 : 11,
+    meetings: {
+      count: period === 'week' ? 12 : 45
     },
-    recentEmails: [],
-    note: 'Configure Application Insights to see real data. Query: customEvents | where name == \'InvoiceReceived\' and customDimensions.HasPdfAttachment == \'false\''
+    invoices: {
+      total: 523,
+      breakdown: {
+        factuurdemo: {
+          name: 'Factuurdemo',
+          count: 312,
+          email: 'factuurdemo@databalk.nu'
+        },
+        woonzorg: {
+          name: 'Woonzorg',
+          count: 211,
+          email: 'woonzorgfactuur@databalk.nu'
+        }
+      }
+    }
   };
 
   return NextResponse.json(mockData);

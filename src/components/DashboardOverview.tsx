@@ -1,19 +1,19 @@
 'use client';
 
-import { Calendar, FileText, AlertTriangle, TrendingUp } from 'lucide-react';
+import { Calendar, FileText, AlertTriangle, XCircle } from 'lucide-react';
 import StatCard from './StatCard';
 import { DashboardData } from '@/types/dashboard';
 
 interface DashboardOverviewProps {
   data: DashboardData;
-  noPdfCount?: number;
-  failureCount?: number;
+  noPdfCount: number;
+  failureCount: number;
 }
 
 export default function DashboardOverview({ 
   data, 
-  noPdfCount = 0, 
-  failureCount = 0 
+  noPdfCount, 
+  failureCount 
 }: DashboardOverviewProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -22,6 +22,10 @@ export default function DashboardOverview({
         value={data.meetings.total}
         icon={Calendar}
         color="blue"
+        trend={{
+          value: data.meetings.thisWeek,
+          isPositive: true,
+        }}
       />
       <StatCard
         title="Total Invoices"
@@ -38,7 +42,7 @@ export default function DashboardOverview({
       <StatCard
         title="Failed Processing"
         value={failureCount}
-        icon={TrendingUp}
+        icon={XCircle}
         color="red"
       />
     </div>
