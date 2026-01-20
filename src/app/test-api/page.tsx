@@ -13,7 +13,7 @@ export default function TestAPI() {
     const url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
     setApiUrl(url);
 
-    fetch(`${url}/api/analytics/dashboard`)
+    fetch(`${url}/api/Analytics/dashboard`)
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
         return res.json();
@@ -154,10 +154,12 @@ export default function TestAPI() {
         <div className="bg-white rounded-lg shadow-md p-6 mt-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">All Available Endpoints</h2>
           <div className="space-y-2">
-            <EndpointLink url={`${apiUrl}/api/analytics/dashboard`} label="Dashboard Data" />
-            <EndpointLink url={`${apiUrl}/api/analytics/summary?period=week`} label="Summary (Week)" />
-            <EndpointLink url={`${apiUrl}/api/analytics/emails-without-pdf?period=week`} label="Emails Without PDF" />
-            <EndpointLink url={`${apiUrl}/api/analytics/failed-processing?period=week`} label="Failed Processing" />
+            <EndpointLink url={`${apiUrl}/api/Analytics/dashboard`} label="Dashboard Data" />
+            <EndpointLink url={`${apiUrl}/api/Analytics/summary?period=week`} label="Summary (Week)" />
+            <EndpointLink url={`${apiUrl}/api/Analytics/emails-without-pdf?period=week`} label="Emails Without PDF" />
+            <EndpointLink url={`${apiUrl}/api/Analytics/failed-processing?period=week`} label="Failed Processing" />
+            <EndpointLink url={`${apiUrl}/api/Analytics/meetings/count`} label="Meeting Count" />
+            <EndpointLink url={`${apiUrl}/api/Analytics/invoices/count?recipient=all`} label="Invoice Count (All)" />
           </div>
         </div>
       </div>
