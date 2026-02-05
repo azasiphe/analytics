@@ -81,7 +81,7 @@ export default function FailuresList({ data }: FailuresListProps) {
                 key={index} 
                 className="flex items-start gap-3 p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors"
               >
-                <div className="flex-shrink-0 mt-1">
+                <div className="shrink-0 mt-1">
                   <XCircle className={`w-5 h-5 ${
                     failure.failureType === 'Extraction' ? 'text-orange-500' : 'text-red-500'
                   }`} />
